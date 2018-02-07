@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--打开方式
+    1.浏览器直接打开
+    2.在HTML中使用<img>打开
+    3.直接在HTML中使用SVG标签
+    4.作为CSS背景
+ -->
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style media="screen">
+    @import "compass/css3";
+
+/** * * * * * * * * * * * * * * *
+* COLORS * * * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+$color--black: #000;
+$color--white: #fff;
+
+$color--button--light: #bab8f1;
+$color--button--dark: #674ec1;
+$color--controller: #d2d2d2;
+$color--controller--dark: #b0b0b8;
+$color--controller--darker: #686868;
+$color--controller--darkest: #464646;
+
+$color--mario-boot: #895201;
+$color--mario-boot--dark: #402b0e;
+$color--mario-boot--light: #c39c3c;
+$color--mario-pants: #79dac8;
+$color--mario-pants--dark: #0e218c;
+$color--mario-shirt: #ff3968;
+$color--mario-shirt--dark: #a22251;
+$color--mario-skin: #ffd6d1;
+$color--mario-skin--light: #ffefee;
+$color--mario-skin--dark: #ffbebc;
+$color--mario-skin--darker: #cc5856;
+
+$color--sky: #0063bd;
+
+$color--stroke: #886029;
+
+$color--world-cloud: #def0f4;
+$color--world-dirt: #c89858;
+$color--world-dirt--light: #e0c14e;
+$color--world-dome: #62b3dc;
+$color--world-dome--dark: #5ba9d0;
+$color--world-dome--darker: #0a5380;
+$color--world-dome--back: #c6e7e7;
+$color--world-dome--back--dark: #b9dede;
+$color--world-dome--back--darker: #a2cfcf;
+$color--world-grass: #00ce00;
+$color--world-grass--dark: #00a728;
+$color--world-grass--darker: #05472a;
+
+/** * * * * * * * * * * * * * * *
+* DIMENSIONS * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+$controller-height: 30vh;
+$controller-button: $controller-height * .15;
+$controller-dpad: $controller-height * .65;
+$controller-padding: $controller-height * .2;
+$controller-padding--button: $controller-padding * .8;
+$controller-width: $controller-height * 2.5;
+
+$mario-height: 30vh;
+$mario-hat: $mario-height * .25;
+$mario-head: $mario-height * .4;
+$mario-legs: $mario-head * .5;
+$mario-width: $mario-height * .5;
+
+$stroke: $mario-height * .013;
+
+$world-ground-back: 60vh;
+$world-ground-fore: 60vh;
+$world-ground-level: (100vh - $mario-height) * .6;
+$world-slide-width: 100vw / 3;
+
+$z-index--controller: 900;
+$z-index--mario: 200;
+$z-index--world: 100;
+
+/** * * * * * * * * * * * * * * *
+* BASE * * * * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+* {
+box-sizing: border-box;
+font-family: 'Open Sans Condensed', Helvetica, Arial, sans-serif;
+}
+
+html {
+background-color: $color--black;
+&.touch {
+.controller {
+  display: none;
+}
+}
+}
+
+/** * * * * * * * * * * * * * * *
+* WORLD  * * * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.world {
+background-color: $color--sky;
+height: 100vh;
+max-height: 840px;
+margin: 0 auto;
+overflow: hidden;
+position: relative;
+overflow: hidden;
+width: 100%;
+max-width: 1020px;
+min-width: 660px;
+
+.ground {
+position: absolute;
+}
+
+.ground--back {
+background-color: rgba(blue, .2);
+height: $world-ground-back;
+width: 100%;
+
+&::before {
+  @include background-image(linear-gradient(transparent 40%, rgba($color--white, .2) 100%));
+  content: '';
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.ground__slide {
+  height: $world-ground-back;
+
+  &:nth-child(odd) {
+    .ground__cloud--1 {
+      top: 30%;
+    }
+    .ground__cloud--2 {
+      display: none;
+    }
+    .ground__cloud--3 {
+      top: 60%; right: 0;
+    }
+  }
+}
+}
+
+.ground--fore {
+background-color: rgba(green, .2);
+height: $world-ground-fore;
+width: 100%;
+
+.ground__slide {
+  height: $world-ground-fore;
+
+  &:nth-child(odd) {
+    .ground__dome--1 {
+      height: 25%;
+    }
+    .ground__dome--2 {
+      height: 45%
+    }
+    .ground__dome--3 {
+      @include background-image(linear-gradient(to right, $color--world-dome--back 50%, $color--world-dome--back--dark 70%, $color--world-dome--back--darker 100%));
+      border: 0;
+      height: 65%;
+      z-index: $z-index--world;
+    }
+  }
+}
+}
+
+.ground--level {
+background-color: rgba(red, .2);
+height: $world-ground-level;
+bottom: 0;
+width: 100%;
+
+.ground__slide {
+  height: $world-ground-level;
+}
+}
+
+.ground__slide {
+height: 100%;
+overflow: hidden;
+position: relative;
+width: $world-slide-width;
+}
+}
+
+.world--yoshis-island-1 {
+.ground__cloud {
+background-color: $color--white;
+border-bottom: ($stroke * 4) solid $color--world-cloud;
+border-radius: $world-ground-back * .1;
+height: $world-ground-back * .1;
+position: absolute;
+width: 50%;
+}
+
+.ground__cloud--1 {
+top: $world-ground-back * .1;
+}
+.ground__cloud--2 {
+top: $world-ground-back * .2; left: 20%;
+}
+.ground__cloud--3 {
+top: $world-ground-back * .5; left: 30%;
+}
+
+.ground__dirt {
+@include background-image(linear-gradient($color--world-dirt 40%, $color--world-dirt--light 100%));
+height: 100%;
+position: absolute;
+width: 100%;
+}
+
+.ground__dome {
+@include background-image(linear-gradient(to right, $color--world-dome 50%, $color--world-dome--dark 70%, $color--world-dome--darker 100%));
+border: $stroke solid $color--world-dome--darker;
+border-radius: $world-slide-width * .4;
+border-bottom-right-radius: 0;
+border-bottom-left-radius: 0;
+height: 50%;
+position: absolute;
+bottom: 0;
+width: 30%;
+z-index: $z-index--world + 1;
+
+&::before {
+  background-color: rgba($color--white, .4);
+  border-radius: 50%;
+  content: '';
+  height: 3vh;
+  min-height: 15px;
+  max-height: 50px;
+  position: absolute;
+  top: 5%; right: 20%;
+  transform: rotate(-22.5deg);
+  width: 3vh;
+  min-width: 15px;
+  max-width: 50px;
+}
+}
+
+.ground__dome--1 {
+left: 10%;
+}
+.ground__dome--2 {
+height: 35%;
+right: 5%;
+}
+.ground__dome--3 {
+height: 200%;
+left: 25%;
+}
+
+.ground__grass {
+@include background-image(linear-gradient($color--world-grass 40%, $color--world-grass--dark 80%));
+border-top: $stroke solid $color--world-grass--darker;
+display: flex;
+height: $world-ground-level * .1;
+position: absolute;
+width: 100%;
+}
+.ground__overhang {
+height: $world-slide-width * .2;
+position: relative;
+width: 100%;
+
+&::before,
+&::after {
+  border-top: ($world-ground-level * .1) solid transparent;
+  border-bottom: ($world-ground-level * .1) solid $color--world-grass--dark;
+  border-radius: 50%;
+  content: '';
+  position: absolute;
+  width: 100%;
+}
+&::before {
+  border-bottom-color: $color--world-grass--darker;
+  top: -10%;
+}
+&::after {
+  border-bottom-width: $world-ground-level * .09;
+  top: -10%; left: 2.5%;
+  width: 95%;
+}
+}
+}
+
+/** * * * * * * * * * * * * * * *
+* CONTROLLER * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.controller {
+height: $controller-height;
+opacity: 1;
+position: absolute;
+bottom: $controller-padding / 2; left: 50%;
+transform: translateX(-50%);
+transition: opacity .6s ease-in-out;
+width: $controller-width;
+}
+
+.controller--hidden {
+opacity: 0;
+}
+
+.controller__buttons-wrapper {
+background-color: $color--controller;
+border: $stroke solid $color--controller--dark;
+border-top-width: 0;
+border-left-width: 0;
+border-radius: 50%;
+height: $controller-height;
+position: absolute;
+right: 0;
+width: $controller-height;
+}
+
+.controller__buttons {
+background-color: $color--controller--dark;
+border-radius: 50%;
+content: '';
+height: $controller-height - ($controller-padding * .7);
+position: absolute;
+top: 50%; left: 50%;
+transform: translateX(-50%) translateY(-50%);
+width: $controller-height - ($controller-padding * .7);
+
+&::before,
+&::after {
+background-color: $color--controller;
+border-radius: $controller-height * .2;
+content: '';
+height: $controller-height * .2;
+position: absolute;
+top: $controller-button * 1.55;
+right: $controller-button * .55;
+bottom: $controller-button * 1.55;
+left: $controller-button * .55;
+transform: rotate(-45deg);
+width: $controller-height * .5;
+z-index: $z-index--controller;
+}
+&::before {
+bottom: auto; right: auto;
+}
+&::after {
+top: auto; left: auto;
+}
+
+.button {
+border: 0;
+border-radius: 50%;
+height: $controller-button;
+position: absolute;
+transition: background-color .1s ease-in-out;
+width: $controller-button;
+z-index: $z-index--controller + 1;
+
+&:focus {
+  outline: none;
+}
+&:hover {
+  cursor: pointer;
+}
+
+&::after {
+  color: $color--white;
+  font-size: $controller-button * .65;
+  font-style: italic;
+}
+}
+
+.button--a {
+background-color: $color--button--dark;
+top: 50%; right: $controller-padding--button;
+transform: translateY(-50%);
+&:hover {
+  background-color: darken($color--button--dark, 20%);
+}
+&::after {
+  content: 'A';
+  position: absolute;
+  top: -70%; right: -70%;
+}
+}
+.button--b {
+background-color: $color--button--dark;
+bottom: $controller-padding--button; left: 50%;
+transform: translateX(-50%);
+&:hover {
+  background-color: darken($color--button--dark, 20%);
+}
+&::after {
+  content: 'B';
+  position: absolute;
+  bottom: -70%; left: -70%;
+}
+}
+.button--x {
+background-color: $color--button--light;
+top: $controller-padding--button; left: 50%;
+transform: translateX(-50%);
+
+&:hover {
+  background-color: darken($color--button--light, 20%);
+}
+
+&::after {
+  content: 'X';
+  position: absolute;
+  top: -70%; right: -70%;
+}
+}
+.button--y {
+background-color: $color--button--light;
+top: 50%; left: $controller-padding--button;
+transform: translateY(-50%);
+
+&:hover {
+  background-color: darken($color--button--light, 20%);
+}
+
+&::after {
+  content: 'Y';
+  position: absolute;
+  bottom: -70%; left: -70%;
+}
+}
+}
+
+.controller__dpad-wrapper {
+background-color: $color--controller;
+border: $stroke solid $color--controller--dark;
+border-top-width: 0;
+border-right-width: 0;
+border-radius: 50%;
+height: $controller-height;
+position: absolute;
+left: 0;
+width: $controller-height;
+}
+
+.controller__dpad {
+border: $stroke solid $color--controller--dark;
+border-radius: 50%;
+height: $controller-dpad;
+position: absolute;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+width: $controller-dpad;
+
+&::before {
+background-color: $color--controller--darker;
+content: '';
+height: $controller-button * 1.5;
+position: absolute;
+top: 50%; left: 50%;
+transform: rotate(45deg) translateX(-50%) translateY(-50%);
+transform-origin: 0 0;
+width: $controller-button * 1.5;
+}
+
+.d {
+background-color: $color--controller--darker;
+border-radius: 10%;
+height: $controller-button;
+position: absolute;
+top: 50%; left: 50%;
+transition: background-color .1s ease-in-out;
+width: $controller-button;
+&:hover {
+  background-color: $color--controller--darkest;
+  cursor: pointer;
+}
+}
+
+.d--up {
+transform: translateX(-50%) translateY(-150%);
+}
+.d--right {
+transform: translateX(50%) translateY(-50%);
+}
+.d--down {
+transform: translateX(-50%) translateY(50%);
+}
+.d--left {
+transform: translateX(-150%) translateY(-50%);
+}
+}
+
+.controller__select-start-wrapper {
+background-color: $color--controller;
+border-bottom: $stroke solid $color--controller--dark;
+height: $controller-height * .8;
+position: absolute;
+left: $controller-height / 2;
+width: $controller-width - $controller-height;
+}
+
+.controller__select-start {
+height: $controller-height * .25;
+position: absolute;
+bottom: 5%; left: 50%;
+transform: translateX(-50%);
+width: $controller-height * .5;
+z-index: 999;
+
+.button {
+height: 100%;
+position: absolute;
+width: 50%;
+
+&:hover {
+  cursor: pointer;
+  &::before {
+    background-color: $color--controller--darkest;
+  }
+}
+
+&::before {
+  background-color: $color--controller--darker;
+  border-radius: $controller-height * .075;
+  content: '';
+  height: $controller-height * .075;
+  position: absolute;
+  top: 25%;
+  transform: rotate(-36deg);
+  transform-origin: 0 0;
+  transition: background-color .1s ease-in-out;
+  width: 90%;
+}
+&::after {
+  color: $color--controller--darker;
+  font-size: $controller-button * .5;
+  font-style: italic;
+  position: absolute;
+  bottom: 0;
+}
+}
+.button--select {
+&::after {
+  content: 'SELECT';
+}
+}
+.button--start {
+right: 0;
+&::after {
+  content: 'START'
+}
+}
+}
+
+/** * * * * * * * * * * * * * * *
+* MARIO  * * * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.mario__wrapper {
+align-items: center;
+display: flex;
+height: $mario-height;
+justify-content: center;
+position: absolute;
+bottom: 36vh; left: 50%;
+transform: translateX(-50%) translateY(0);
+min-width: $mario-width;
+}
+
+.mario {
+height: $mario-height;
+position: relative;
+width: $mario-width;
+
+> div {
+// border: 1px solid rgba(teal, .4);
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+}
+
+.mario__body {
+height: $mario-head;
+top: 35%;
+transition: all .1s ease-in-out;
+width: $mario-head;
+z-index: $z-index--mario;
+
+> div {
+  position: absolute;
+}
+
+.arm {
+  background-color: $color--mario-shirt;
+}
+
+.buttons {
+  height: $mario-head * .2;
+  top: 35%; left: 45%;
+  width: $mario-head * .5;
+
+  &::before, &::after {
+    background-color: $color--white;
+    border-radius: 50%;
+    content: '';
+    height: $mario-head * .15;
+    position: absolute;
+    width: $mario-head * .15;
+  }
+  &::after {
+    right: 0;
+    width: $mario-head * .1;
+  }
+}
+
+.fist {
+  background-color: $color--white;
+  border: $stroke solid $color--stroke;
+  border-radius: 50%;
+  height: $mario-head * .4;
+  width: $mario-head * .4;
+}
+.fist--left {
+  border-bottom-right-radius: 30%;
+  transform: rotate(-22.5deg);
+}
+.fist--right {
+  border-top-right-radius: 30%;
+
+  &::before {
+    background-color: $color--white;
+    border: $stroke solid $color--stroke;
+    border-radius: 50%;
+    content: '';
+    height: $mario-head * .15;
+    position: absolute;
+    width: $mario-head * .15;
+  }
+}
+
+.torso {
+  background-color: $color--mario-shirt;
+  border: $stroke solid $color--mario-shirt--dark;
+  border-radius: 50%;
+  height: $mario-head;
+  width: $mario-head;
+}
+
+.waist {
+  border-top: ($mario-head * .4) solid transparent;
+  border-bottom: ($mario-head * .6) solid $color--mario-pants--dark;
+  border-radius: 50%;
+  top: 1%;
+  width: $mario-head;
+
+  &::before {
+    border-top: ($mario-head * .3) solid transparent;
+    border-bottom: ($mario-head * .4) solid $color--mario-pants;
+    border-radius: 50%;
+    content: '';
+    position: absolute;
+    top: -($mario-head * .3); left: $mario-head * .23;
+    width: $mario-head * .75;
+  }
+}
+} // .mario-body
+
+.mario__head {
+height: $mario-head;
+top: 0; left: 45%;
+transition: all .1s ease-in-out;
+width: $mario-head;
+z-index: $z-index--mario + 1;
+
+> div {
+  position: absolute;
+}
+
+.ear {
+  background-color: $color--mario-skin--dark;
+  border: $stroke solid $color--mario-skin--dark;
+  border-top-color: $color--mario-skin;
+  border-left-width: 0;
+  border-radius: 50%;
+  height: $mario-head * .25;
+  top: 45%; left: -10%;
+  width: $mario-head * .25;
+
+  &::before {
+    border: $stroke solid transparent;
+    border-right-color: $color--mario-skin--darker;
+    border-radius: 50%;
+    content: '';
+    height: 50%;
+    position: absolute;
+    top: 15%; left: 25%;
+    width: 30%;
+  }
+}
+
+.eye {
+  background-color: $color--white;
+  border-radius: ($mario-head * .45) / 2;
+  height: 100%;
+  position: absolute;
+  width: 45%;
+  &::before {
+    background-color: $color--black;
+    border-radius: ($mario-head * .55) / 2;
+    content: '';
+    height: 65%;
+    position: absolute;
+    bottom: 5%; left: 5%;
+    width: ($mario-head * .5) / 2;
+    width: 50%;
+  }
+}
+.eye--left {
+  border-top: $stroke solid transparent;
+  border-bottom-color: $color--black;
+  border-left-color: $color--black;
+  width: 50%;
+  &::before {
+    right: 0; left: auto;
+  }
+}
+.eye--right {
+  right: 0;
+}
+
+.eyes {
+  display: flex;
+  height: $mario-head * .3;
+  top: 30%; right: 5%;
+  width: $mario-head * .45;
+}
+
+.face {
+  background-color: $color--mario-skin;
+  border-radius: 50%;
+  height: $mario-head * .65;
+  bottom: 10%; right: 5%;
+  width: $mario-head * .65;
+}
+
+.hat {
+  height: $mario-hat;
+  top: -($mario-hat * .2); left: -($mario-hat * .2);
+  width: $mario-hat * 2;
+  > div {
+    position: absolute;
+  }
+}
+
+.hat__bill {
+  height: $mario-hat * .5;
+  bottom: 5%; left: $mario-hat * .2;
+  width: $mario-hat * 1.8;
+
+  &::before {
+    border-top: $stroke * 6 solid $color--black;
+    border-radius: 50%;
+    content: '';
+    height: $mario-hat * .7;
+    position: absolute;
+    left: 0%; bottom: -140%;
+    transform: rotate(-22.5deg);
+    transform-origin: 0 0;
+    width: 75%;
+  }
+  &::after {
+    border-top: $stroke * 8 solid $color--black;
+    border-radius: 50%;
+    content: '';
+    height: $mario-hat * .4;
+    position: absolute;
+    top: -30%; right: 5%;
+    width: 75%;
+  }
+}
+
+.hat__top {
+  height: $mario-hat * .9;
+  top: $mario-hat * .15; left: $mario-hat * .15;
+  width: $mario-hat * 1.65;
+  > div {
+    position: absolute;
+  }
+}
+
+.hat__top__back {
+  background-color: $color--mario-shirt;
+  border: ($stroke / 2) solid $color--black;
+  border-right-color: transparent;
+  border-radius: $mario-hat * .2;
+  border-top-right-radius: 0;
+  height: $mario-hat * .4;
+  bottom: -17%; left: -10%;
+  transform: rotate(-43deg);
+  transform-origin: 0 0;
+  width: $mario-hat * 1;
+}
+
+.hat__top__front {
+  background-color: $color--mario-shirt;
+  border: $stroke solid $color--black;
+  border-bottom-color: transparent;
+  border-left-width: 0;
+  border-radius: $mario-hat * .3;
+  border-top-left-radius: 60%;
+  border-bottom-right-radius: 50%;
+  height: $mario-hat * .65;
+  top: -20%; right: 0;
+  transform-origin: 0 0;
+  width: $mario-hat * 1.2;
+}
+
+.mullet {
+  height: $mario-head * .25;
+  bottom: 10%; left: 0;
+  width: $mario-head * .25;
+
+  &::before, &::after {
+    background-color: $color--black;
+    border-radius: 50%;
+    content: '';
+    height: 70%;
+    position: absolute;
+    width: 70%;
+  }
+  &::after {
+    right: 0; bottom: 0;
+  }
+}
+
+.mustache {
+  height: $mario-head * .2;
+  top: 70%; right: -15%;
+  width: $mario-head * .7;
+  z-index: $z-index--mario;
+}
+
+.mustache__tuft {
+  background-color: $color--black;
+  border-radius: 50%;
+  height: 60%;
+  position: absolute;
+  width: 30%;
+}
+.mustache__tuft--2 {
+  height: 60%;
+  bottom: 0; left: 15%;
+}
+.mustache__tuft--3 {
+  height: 60%;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+}
+.mustache__tuft--4 {
+  height: 60%;
+  bottom: 0; right: 15%;
+}
+.mustache__tuft--5 {
+  right: 0;
+}
+
+.nose {
+  background-color: $color--mario-skin--dark;
+  border-right: $stroke solid $color--mario-skin--darker;
+  border-bottom: $stroke solid $color--mario-skin--darker;
+  border-radius: ($mario-head * .25) / 2;
+  height: $mario-head * .25;
+  top: 55%; right: -5%;
+  width: $mario-head * .45;
+  z-index: $z-index--mario + 1;
+  &::before {
+    background-color: $color--mario-skin;
+    border-radius: $mario-head * .15;
+    content: '';
+    height: $mario-head * .15;
+    position: absolute;
+    top: 2%; right: 5%;
+    width: $mario-head * .3;
+  }
+  &::after {
+    background-color: $color--mario-skin--light;
+    border-radius: $mario-head * .5;
+    content: '';
+    height: $mario-head * .05;
+    position: absolute;
+    top: 5%; right: 10%;
+    width: $mario-head * .15;
+  }
+}
+
+.sideburns {
+  background-color: $color--black;
+  border-radius: 50%;
+  border-bottom-left-radius: 30%;
+  height: $mario-head * .17;
+  top: 40%; left: 10%;
+  width: $mario-head * .17;
+  &::before, &::after {
+    background-color: $color--black;
+    border-radius: 50%;
+    content: '';
+    height: 70%;
+    position: absolute;
+    width: 60%;
+  }
+  &::before {
+    top: 70%; left: 20%;
+  }
+  &::after {
+    height: 60%;
+    top: 50%; left: 70%;
+    width: 60%;
+  }
+}
+
+.skull {
+  background-color: $color--mario-skin--dark;
+  border: $stroke solid $color--mario-skin--darker;
+  border-radius: 50%;
+  height: $mario-head * .95;
+  bottom: 0; right: 0;
+  width: $mario-head * .95;
+}
+} // .mario-head
+
+.mario__legs {
+height: $mario-legs;
+bottom: 15%;
+width: $mario-head;
+z-index: $z-index--mario + 1;
+
+> div {
+  position: absolute;
+}
+
+.foot {
+  background-color: $color--mario-boot;
+  border: $stroke solid $color--mario-boot--dark;
+}
+
+.leg {
+  background-color: $color--mario-pants--dark;
+}
+
+} // .mario-legs
+
+} // .mario
+
+/** * * * * * * * * * * * * * * *
+* MARIO RUN-1  * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.mario--run-1 {
+
+.mario__body {
+transform: translateX(-50%) translateY(-8%);
+
+.arm--left {
+  border: $stroke solid $color--mario-shirt--dark;
+  border-radius: $mario-head * .4;
+  border-top-right-radius: 20%;
+  height: $mario-head * .4;
+  top: 0; left: 20%;
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  width: $mario-head * .6;
+  z-index: $z-index--mario;
+}
+
+.fist--left {
+  top: 15%; left: 40%;
+  z-index: $z-index--mario;
+}
+.fist--right {
+  display: none;
+}
+}
+
+.mario__head {
+transform: translateX(-50%) translateY(-6%);
+}
+
+.mario__legs {
+
+.foot--left,
+.foot--right {
+  border: $stroke solid transparent;
+  border-radius: 20%;
+  border-top-right-radius: $mario-legs * .35;
+  border-top-left-radius: 30%;
+  height: $mario-legs * .55;
+  bottom: 0; left: 10%;
+  width: $mario-legs * 1.1;
+
+  &::before {
+    background-color: rgba($color--white, .6);
+    border-radius: 50%;
+    content: '';
+    height: 20%;
+    position: absolute;
+    top: 15%; right: 15%;
+    width: 20%;
+    z-index: $z-index--mario + 1;
+  }
+}
+
+.foot--left {
+  border-right-color: $color--mario-boot--dark;
+  z-index: $z-index--mario;
+}
+
+.foot--right {
+  left: 30%;
+}
+
+.foot__sole {
+  background-color: $color--mario-boot--dark;
+  height: $mario-legs * .1;
+  position: absolute;
+  left: 0; bottom: -20%;
+  width: $mario-legs * 1.05;
+}
+
+.leg--left,
+.leg--right{
+  border: $stroke solid transparent;
+  border-radius: 10%;
+  height: $mario-legs * .5;
+  top: 0; left: 10%;
+  width: $mario-legs * .9;
+  z-index: $z-index--mario;
+}
+
+.leg--left {
+  border-right-color: $color--black;
+  border-top-right-radius: 50%;
+  z-index: $z-index--mario + 1;
+}
+
+.leg--right {
+  left: 30%;
+}
+}
+} // .mario--run-1
+
+/** * * * * * * * * * * * * * * *
+* MARIO RUN-2  * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.mario--run-2 {
+
+.mario__body {
+transform: translateX(-50%) translateY(-4%);
+
+.arm--left {
+  border: $stroke solid transparent;
+  border-top-color: $color--mario-shirt--dark;
+  border-bottom-color: $color--mario-shirt--dark;
+  border-left-color: $color--mario-shirt--dark;
+  border-radius: 40%;
+  border-top-left-radius: 60%;
+  height: $mario-head * .5;
+  top: 5%; left: -10%;
+  width: $mario-head * .5;
+  z-index: $z-index--mario;
+}
+
+.fist--left {
+  top: 20%; left: 15%;
+  transform: rotate(-90deg);
+  z-index: $z-index--mario;
+}
+.fist--right {
+  top: 15%; right: 0;
+
+  &::before {
+    top: -5%; left: 15%;
+  }
+}
+}
+
+.mario__head {
+transform: translateX(-50%) translateY(0);
+}
+
+.mario__legs {
+
+.foot--left {
+  border-radius: 50%;
+  border-bottom-right-radius: 30%;
+  border-bottom-left-radius: 30%;
+  height: $mario-legs * .55;
+  top: 35%; left: 0;
+  transform: rotate(36deg);
+  width: $mario-legs * .7;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+  }
+  &::before {
+    background-color: $color--mario-boot;
+    border: $stroke solid $color--mario-boot--dark;
+    border-left-width: 0;
+    border-radius: 60%;
+    border-top-left-radius: 40%;
+    border-bottom-right-radius: 20%;
+    border-bottom-left-radius: 0;
+    height: $mario-legs * .35;
+    top: 20%; left: 50%;
+    transform: rotate(-36deg);
+    transform-origin: 0 0;
+    width: $mario-legs * .65;
+  }
+  &::after {
+    background-color: rgba($color--white, .6);
+    border-radius: 50%;
+    height: 30%;
+    top: -20%; right: -50%;
+    transform: rotate(-36deg);
+    width: 30%;
+  }
+}
+
+.foot--right {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-radius: $mario-legs * .2;
+  border-top-right-radius: $mario-legs * .35;
+  border-top-left-radius: 50%;
+  height: $mario-legs * .55;
+  top: 15%; right: -15%;
+  transform: rotate(-36deg);
+  width: $mario-legs * 1.1;
+
+  &::before {
+    background-color: rgba($color--white, .6);
+    border-radius: 50%;
+    content: '';
+    height: 20%;
+    position: absolute;
+    top: 15%; right: 15%;
+    width: 20%;
+  }
+}
+
+.foot__sole--right {
+  height: $mario-legs * .3;
+  position: absolute;
+  left: -5%; bottom: -10%;
+  width: $mario-legs * 1.1;
+  &::before, &::after {
+    background-color: $color--mario-boot--dark;
+    border-radius: 45%;
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 55%;
+  }
+  &::before {
+    border-bottom-right-radius: 0;
+  }
+  &::after {
+    border-bottom-left-radius: 0;
+    right: 0;
+  }
+}
+
+.leg--left {
+  border-radius: 50%;
+  border-top-right-radius: 0;
+  border-top-left-radius: 20%;
+  border-bottom-right-radius: 60%;
+  border-bottom-left-radius: 40%;
+  height: $mario-legs * .5;
+  top: 0; left: 0;
+  transform: rotate(36deg);
+  width: $mario-legs * .8;
+  z-index: $z-index--mario;
+}
+
+.leg--right {
+  border-radius: 40%;
+  height: $mario-legs * .4;
+  top: 15%; right: 20%;
+  transform: rotate(-36deg);
+  width: $mario-legs * .5;
+}
+}
+} // .mario--run-2
+
+/** * * * * * * * * * * * * * * *
+* MARIO RUN-3  * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.mario--run-3 {
+
+.mario__body {
+transform: translateX(-50%) translateY(0);
+
+.arm--left {
+  border-top: $stroke solid $color--mario-shirt--dark;
+  border-left: $stroke solid $color--mario-shirt--dark;
+  border-top-left-radius: $mario-head * .2;
+  height: $mario-head * .4;
+  top: 0; left: -10%;
+  width: $mario-head * .4;
+}
+
+.fist--left {
+  top: 25%; left: -15%;
+}
+.fist--right {
+  top: 0; right: -15%;
+
+  &::before {
+    top: -5%; left: 15%;
+  }
+}
+}
+
+.mario__head {
+transform: translateX(-50%) translateY(4%);
+}
+
+.mario__legs {
+
+.foot--left {
+  border-radius: 40%;
+  height: $mario-legs * 1;
+  top: -10%; left: -15%;
+  transform: rotate(11.25deg);
+  width: $mario-legs * .6;
+  z-index: $z-index--mario - 1;
+
+  &::before {
+    background-color: $color--mario-boot;
+    border: $stroke solid $color--mario-boot--dark;
+    border-left-color: transparent;
+    border-radius: 50%;
+    content: '';
+    height: $mario-legs * .6;
+    position: absolute;
+    top: -5%; right: -50%;
+    width: $mario-legs * .5;
+  }
+}
+
+.foot--right {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-radius: $mario-legs * .2;
+  border-top-right-radius: $mario-legs * .35;
+  border-top-left-radius: 50%;
+  height: $mario-legs * .65;
+  top: -20%; right: -25%;
+  transform: rotate(-60deg);
+  width: $mario-legs * 1.1;
+
+  &::before {
+    background-color: rgba($color--white, .6);
+    border-radius: 50%;
+    content: '';
+    height: 20%;
+    position: absolute;
+    top: 15%; right: 15%;
+    width: 20%;
+  }
+}
+
+.foot__sole--right {
+  height: $mario-legs * .3;
+  position: absolute;
+  left: -5%; bottom: -10%;
+  width: $mario-legs * 1.1;
+  &::before, &::after {
+    background-color: $color--mario-boot--dark;
+    border-radius: 45%;
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 55%;
+  }
+  &::before {
+    border-bottom-right-radius: 0;
+  }
+  &::after {
+    border-bottom-left-radius: 0;
+    right: 0;
+  }
+}
+
+.leg--left {
+  border: $stroke solid transparent;
+  border-radius: ($mario-legs * .6) / 2;
+  border-bottom-left-radius: 40%;
+  height: $mario-legs * .65;
+  top: $mario-legs * -.1; left: 0;
+  transform: rotate(11.25deg);
+  width: $mario-legs * .9;
+  z-index: $z-index--mario;
+}
+
+.leg--right {
+  height: $mario-legs * .3;
+  top: 15%; right: 10%;
+  width: $mario-legs;
+}
+}
+} // .mario--run-3
+
+/** * * * * * * * * * * * * * * *
+* UTILS  * * * * * * * * * * * *
+* * * * * * * * * *  * * * * * */
+
+.highlight {
+border: 0;
+box-shadow: none;
+}
+.highlight--active {
+border: $stroke solid #f13d19 !important;
+box-shadow: 0 0 ($stroke * 2) #f13d19;
+}
+    </style>
+    <script>
+        var a = new Array();
+        console.log(a.__proto__);
+    </script>
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+
+    <div class="world world--yoshis-island-1">
+
+
+      <div class="ground ground--back">
+        <div class="ground__slide">
+          <div class="ground__cloud ground__cloud--1"></div>
+          <div class="ground__cloud ground__cloud--2"></div>
+          <div class="ground__cloud ground__cloud--3"></div>
+        </div>
+      </div>
+
+      <div class="ground ground--fore">
+        <div class="ground__slide">
+          <div class="ground__dome ground__dome--3"></div>
+          <div class="ground__dome ground__dome--2"></div>
+          <div class="ground__dome ground__dome--1"></div>
+        </div>
+      </div>
+
+      <div class="ground ground--level">
+        <div class="ground__slide">
+          <div class="ground__dirt"></div>
+          <div class="ground__grass">
+            <div class="ground__overhang ground__overhang--1"></div>
+            <div class="ground__overhang ground__overhang--2"></div>
+            <div class="ground__overhang ground__overhang--3"></div>
+            <div class="ground__overhang ground__overhang--4"></div>
+            <div class="ground__overhang ground__overhang--5"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mario__wrapper">
+        <div class="mario mario--run-2">
+
+          <div class="mario__head">
+            <div class="mullet"></div>
+            <div class="skull"></div>
+            <div class="face"></div>
+            <div class="hat">
+              <div class="hat__top">
+                <div class="hat__top__back"></div>
+                <div class="hat__top__front"></div>
+              </div>
+              <div class="hat__bill"></div>
+            </div>
+            <div class="eyes">
+              <div class="eye eye--left"></div>
+              <div class="eye eye--right"></div>
+            </div>
+            <div class="nose"></div>
+            <div class="mustache">
+              <div class="mustache__tuft mustache__tuft--1"></div>
+              <div class="mustache__tuft mustache__tuft--2"></div>
+              <div class="mustache__tuft mustache__tuft--3"></div>
+              <div class="mustache__tuft mustache__tuft--4"></div>
+              <div class="mustache__tuft mustache__tuft--5"></div>
+            </div>
+            <div class="ear"></div>
+            <div class="sideburns"></div>
+          </div>
+
+          <div class="mario__legs">
+            <div class="leg leg--left"></div>
+            <div class="foot foot--left">
+              <div class="foot__sole foot__sole--left"></div>
+            </div>
+            <div class="leg leg--right"></div>
+            <div class="foot foot--right">
+              <div class="foot__sole foot__sole--right"></div>
+            </div>
+          </div>
+
+          <div class="mario__body">
+            <div class="fist fist--right"></div>
+            <div class="torso"></div>
+            <div class="arm arm--left"></div>
+            <div class="waist"></div>
+            <div class="buttons"></div>
+            <div class="fist fist--left"></div>
+          </div>
+
+        </div> <!-- .mario-run-1 -->
+      </div> <!-- .mario__wrapper -->
+
+      <div class="controller">
+        <div class="controller__select-start-wrapper">
+          <div class="controller__select-start">
+            <div class="button button--select"></div>
+            <div class="button button--start"></div>
+          </div>
+        </div>
+
+        <div class="controller__dpad-wrapper">
+          <div class="controller__dpad">
+            <div class="d d--up"></div>
+            <div class="d d--right highlight"></div>
+            <div class="d d--down"></div>
+            <div class="d d--left"></div>
+          </div>
+        </div>
+
+        <div class="controller__buttons-wrapper">
+          <div class="controller__buttons">
+            <button class="button button--x highlight"></button>
+            <button class="button button--a"></button>
+            <button class="button button--b"></button>
+            <button class="button button--y highlight"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+    var $buttonA = $('.button--a');
+var $buttonB = $('.button--b');
+var $buttonX = $('.button--x');
+var $buttonY = $('.button--y');
+var $dDown = $('.d--down');
+var $dLeft = $('.d--left');
+var $dRight = $('.d--right');
+var $dUp = $('.d--up');
+var $groundBack = $('.ground--back');
+var $groundFore = $('.ground--fore');
+var $groundLevel = $('.ground--level');
+var $highlights = $('.highlight');
+var $mario = $('.mario');
+var $world = $('.world');
+
+var direction = 1;
+var flashCount = 0;
+var runInterval = 80;
+var speed = {
+groundBack: 1000,
+groundFore: 800,
+groundLevel: 600
+};
+var stage = 1;
+var stopRun = () => {};
+var worldLayers = {
+groundBack: $groundBack,
+groundFore: $groundFore,
+groundLevel: $groundLevel
+};
+
+$(document).ready(init);
+
+////
+
+function init() {
+Object.keys(worldLayers).forEach(initSlider);
+
+console.log('init', Modernizr.touch, $('html').classList);
+if (Modernizr.touch) {
+return;
+}
+
+run();
+
+setTimeout(() => {
+stand().then(flashHighlights);
+}, speed.groundLevel);
+}
+
+////
+
+function bindEvents() {
+$dRight.on('mousedown', run);
+$dRight.on('mouseup', stand);
+$dRight.on('mouseout', stand);
+
+$buttonX.on('mousedown', run);
+$buttonX.on('mouseup', stand);
+$buttonX.on('mouseout', stand);
+
+$buttonY.on('mousedown', run);
+$buttonY.on('mouseup', stand);
+$buttonY.on('mouseout', stand);
+
+$(window).resize(stand);
+}
+
+function flashHighlights(add = false) {
+$highlights[add ? 'addClass' : 'removeClass']('highlight--active');
+
+setTimeout(() => {
+if (flashCount === 6) {
+  return;
+}
+flashHighlights(!add);
+flashCount = flashCount + 1;
+}, add ? 800 : 400);
+}
+
+function initSlider(slider) {
+var slickSettings = {
+arrows: false,
+autoplay: false,
+autoplaySpeed: 0,
+centerMode: true,
+centerPadding: 0,
+cssEase: 'linear',
+infinite: true,
+slidesToScroll: 1,
+slidesToShow: 3,
+speed: speed[slider],
+touchMove: false,
+responsive: [{
+  breakpoint: 800,
+  settings: {
+    centerMode: false,
+    slidesToShow: 2
+  }
+}]
+};
+
+for (let x = 1; x <= 3; x++) {
+worldLayers[slider].find('.ground__slide').clone().appendTo(worldLayers[slider]);
+}
+
+worldLayers[slider].slick(slickSettings);
+}
+
+function run(event) {
+clearInterval(stopRun);
+
+Object.keys(worldLayers).forEach(worldMove);
+
+stopRun = setInterval(_step, runInterval);
+
+function _step() {
+if (stage === 1) {
+  direction = 1;
+}
+
+if (stage === 3) {
+  direction = -1;
+}
+
+stage = stage + direction;
+
+$mario.removeClass('mario--run-1 mario--run-2 mario--run-3');
+
+$mario.addClass('mario--run-' + stage);
+}
+}
+
+function stand(event) {
+unbindEvents();
+
+if (event) {
+event.currentTarget.blur();
+}
+
+worldStop('groundBack');
+
+setTimeout(() => {
+worldStop('groundFore');
+}, speed.groundLevel);
+
+return new Promise((resolve) => {
+setTimeout(() => {
+  worldStop('groundLevel');
+
+  clearInterval(stopRun);
+
+  if ($mario.hasClass('mario--run-1')) {
+    Object.keys(worldLayers).forEach(worldStop);
+    bindEvents();
+    resolve('');
+    return;
+  }
+
+  $mario.removeClass('mario--run-1 mario--run-2 mario--run-3');
+  $mario.addClass('mario--run-2');
+
+  resolve('');
+
+  bindEvents();
+
+  setTimeout(() => {
+    $mario.removeClass('mario--run-2');
+    $mario.addClass('mario--run-1');
+  }, runInterval);
+}, speed.groundFore);
+});
+}
+
+function unbindEvents() {
+$dRight.off();
+$buttonX.off();
+$buttonY.off();
+$(window).off();
+}
+
+function worldMove(slider) {
+worldLayers[slider].slick('slickPlay');
+}
+
+function worldStop(slider) {
+worldLayers[slider].slick('slickPause');
+}
+    </script>
+</body>
+</html>
