@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>123</title>
+    <!--
+        设置了flex布局后，子元素的float、clear和vertical-align属性就会失效
+    -->
+    <style>
+        input{
+            width: 90vw;;
+            height: 40px;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-group">
+        <input class='add' type="text">
+        <input type="button" value="go" onclick="add()">
+        <input type="text" value="" class="res">
+        <!-- <pre class="res"></pre> -->
+    </div>
+</div>
+</body>
+</html>
+
+
+
+<script>
+    function add(){
+        let arr = (document.querySelector('.add').value + '').split(' ');
+        let all = 0;
+        let newArr = []
+        arr.forEach((ele)=>{
+            newArr.push(parseInt(ele)+160)
+        })        
+        document.querySelector('.res').value = newArr.join('/')
+    }
+</script>
