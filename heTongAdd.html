@@ -16,6 +16,17 @@
         }
 
     </style>
+    <script>
+    function add(){
+        let arr = (document.querySelector('.add').value + '').split(' ');
+        let all = 0;
+        let newArr = []
+        arr.forEach((ele)=>{
+            newArr.push(parseInt(ele)+160)
+        })        
+        document.querySelector('.res').value = newArr.join('/')
+    }
+      </script>
 </head>
 <body>
     <div class="page-group">
@@ -30,14 +41,4 @@
 
 
 
-<script>
-    function add(){
-        let arr = (document.querySelector('.add').value + '').split(' ');
-        let all = 0;
-        let newArr = []
-        arr.forEach((ele)=>{
-            newArr.push(parseInt(ele)+160)
-        })        
-        document.querySelector('.res').value = newArr.join('/')
-    }
-</script>
+
